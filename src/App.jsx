@@ -1,8 +1,12 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Perf } from 'r3f-perf'
+import { useControls } from 'leva'
 
 function App() {
+
+
+  const { boxColour } = useControls({ boxColour: '#ffffff' })
 
   return (
     <>
@@ -15,9 +19,9 @@ function App() {
           <ambientLight intensity={0.5} />
           <pointLight position={[15, 10, 10]} />
           {/* Geometry */}
-          <mesh>
+          <mesh >
             <boxGeometry receiveShadow />
-            <meshStandardMaterial />
+            <meshStandardMaterial color={boxColour} />
           </mesh>
         </Canvas>
       </div>
