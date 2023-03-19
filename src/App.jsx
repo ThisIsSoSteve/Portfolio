@@ -1,5 +1,6 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
+import { Perf } from 'r3f-perf'
 
 function App() {
 
@@ -7,6 +8,7 @@ function App() {
     <>
       <div className="fixed top-0 left-0 h-screen w-screen">
         <Canvas shadows camera={{ position: [-5, 3, 5] }}>
+          <Perf position='bottom-right' />
           {/* Controls */}
           <OrbitControls makeDefault />
           {/* Lights */}
