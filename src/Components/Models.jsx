@@ -3,19 +3,21 @@ import { useFrame, useThree } from '@react-three/fiber'
 
 
 import { useControls } from 'leva'
+import { SphereGeometry } from "three";
 
 export default function Models() {
 
     //https://codesandbox.io/s/yjhzv?file=/src/App.js
     const { width, height } = useThree((state) => state.viewport)
-    const { boxColour } = useControls({ boxColour: 'hotpink' })
+    const { boxColour } = useControls({ boxColour: 'grey' })
 
     const group = useRef()
 
     return (
         <group ref={group}>
-            <mesh>
-                <boxGeometry receiveShadow position={[0, 0, 0]} />
+            {/* Moon */}
+            <mesh position={[0, 0, 0]} scale={0.3}>
+                <sphereGeometry args={[1, 32, 32]} receiveShadow />
                 <meshStandardMaterial color={boxColour} />
             </mesh>
             <mesh position={[0, -height, 0]}>

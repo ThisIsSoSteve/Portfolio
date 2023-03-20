@@ -1,33 +1,47 @@
-import { OrbitControls, ScrollControls, Scroll } from '@react-three/drei'
+import { OrbitControls, ScrollControls, Scroll, PerspectiveCamera, Stars } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Perf } from 'r3f-perf'
 import Section from './Components/Section'
 import Models from './Components/Models'
+import Background from './Components/Background'
 
 function App() {
   return (
-    <div className="fixed top-0 left-0 h-screen w-screen overscroll-none">
-      <Canvas shadows >
-        {/* camera={{ position: [-5, 3, 5] }} */}
-        <Perf position='bottom-right' />
+    <div className="fixed top-0 left-0 h-screen w-screen overscroll-none bg-slate-900">
+      <Canvas shadows camera={{ fov: 25, position: [0, 0, 8] }}>
+
+        {/* <PerspectiveCamera makeDefault position={[0, 0, 5]} /> */}
         {/* Controls */}
         {/* <OrbitControls makeDefault /> */}
         {/* Lights */}
         <ambientLight intensity={0.5} />
         <pointLight position={[15, 10, 10]} />
-        <ScrollControls damping={0} pages={6} >
+
+        <Background />
+
+        <ScrollControls damping={0.5} pages={6} >
           <Scroll>
             <Models />
           </Scroll>
           <Scroll html>
-            <Section text="Name" />
-            <Section text="Skills" />
-            <Section text="Experience" />
-            <Section text="Education" />
-            <Section text="Interests" />
-            <Section text="Contact" />
+            <Section
+              header="Full Name Here "
+              subheader="Portfolio"
+              description="A Software Developer from the UK">
+              <div
+                class="text-amber-400 uppercase ">
+                Scroll to Explore
+              </div>
+            </Section>
+
+            <Section header="Skills" />
+            <Section header="Experience" />
+            <Section header="Education" />
+            <Section header="Interests" />
+            <Section header="Contact" />
           </Scroll>
         </ScrollControls>
+        <Perf position='bottom-right' />
       </Canvas>
     </div>
   )
