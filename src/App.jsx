@@ -29,7 +29,7 @@ function App() {
               subheader="Portfolio"
               description="A Software Developer from the UK">
               <div
-                class="text-amber-400 uppercase ">
+                className="text-amber-400 uppercase ">
                 Scroll to Explore
               </div>
             </Section>
