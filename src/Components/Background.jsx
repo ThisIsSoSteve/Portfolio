@@ -12,7 +12,7 @@ export default function Background() {
         group.current.rotation.x += 0.01 * delta
     });
 
-    console.log(group)
+
 
     return (
         <group ref={group}>
