@@ -53,8 +53,10 @@ export default function Contact(props) {
                 <boxGeometry args={[1, 1, 0.4]} receiveShadow />
                 <meshStandardMaterial color="LightSkyBlue" />
             </mesh>
-            {/* tree */}
-            <group position={[-2, + 0.5, 0]} rotation={[-Math.PI * 0.05, 0, 0]}>
+            {/* left tree */}
+            <group
+                position={[-(width / 2.5), + 0.5, 0]}
+                rotation={[-Math.PI * 0.05, 0, 0]}>
                 <mesh >
                     <cylinderGeometry args={[0.2, 0.2, 3]} receiveShadow />
                     <meshStandardMaterial color="saddlebrown" />
@@ -65,15 +67,17 @@ export default function Contact(props) {
                 </mesh>
             </group>
 
-            {/* tree */}
-            <group position={[2, + 0.5, 0]} rotation={[-Math.PI * 0.05, 0, 0]}>
+            {/* right tree */}
+            <group
+                position={[width / 2, + 0.5, 0]}
+                rotation={[-Math.PI * 0.05, 0, 0]}>
                 <mesh >
                     <cylinderGeometry args={[0.2, 0.2, 3]} receiveShadow />
                     <meshStandardMaterial color="saddlebrown" />
                 </mesh>
                 <mesh position={[0, + 1, 0]}>
                     <coneGeometry args={[1, 3, 16]} receiveShadow />
-                    <meshStandardMaterial color="green" />
+                    <meshStandardMaterial color="darkgreen" />
                 </mesh>
             </group>
         </group>

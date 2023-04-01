@@ -7,12 +7,13 @@ import { SphereGeometry } from "three";
 import { TransformControls, useScroll } from "@react-three/drei";
 import * as THREE from 'three'
 import Contact from "./Contact";
+import Moon from "./Moon";
 
 export default function Models() {
 
     //https://codesandbox.io/s/yjhzv?file=/src/App.js
     const { width, height } = useThree((state) => state.viewport)
-    const { moonColour } = useControls({ moonColour: 'grey' })
+
 
 
 
@@ -23,14 +24,14 @@ export default function Models() {
     const scroll = useScroll()
 
     const group = useRef()
-    const moon = useRef()
+
     const earth = useRef()
     const earthMesh = useRef()
     const satellite = useRef()
 
 
     useFrame((state, delta) => {
-        const r1 = scroll.range(0, 1 / 6) //0 to 1 when scrolled one sixth of the page is scrolled
+
         const r2 = scroll.range(1 / 6, 1 / 6)
         const r3 = scroll.range(2 / 6, 1 / 12)
 
@@ -45,17 +46,13 @@ export default function Models() {
 
         earthMesh.current.rotation.y += (Math.PI / 100) * delta
 
-        moon.current.position.z = THREE.MathUtils.damp(moon.current.position.z, (-50) * r1, 4, delta)
+
         //console.log(r3);
     });
 
     return (
         <group ref={group}>
-            {/* Moon */}
-            <mesh ref={moon} position={[0, 0, 0]} scale={0.3}>
-                <sphereGeometry args={[1, 32, 32]} receiveShadow />
-                <meshStandardMaterial color={moonColour} />
-            </mesh>
+            <Moon />
             {/* Earth Edge */}
             <group ref={earth}>
                 <group ref={satellite} rotation={[0, Math.PI * 0.25, 0]}>
@@ -103,13 +100,7 @@ export default function Models() {
                 <boxGeometry receiveShadow />
                 <meshStandardMaterial color="orange" />
             </mesh>
-            <Contact >
-
-            </Contact>
-            {/* <mesh position={[0, -height * 5, 0]}>
-                <boxGeometry receiveShadow />
-                <meshStandardMaterial color="purple" />
-            </mesh> */}
+            <Contact />
         </group>
     )
 }
