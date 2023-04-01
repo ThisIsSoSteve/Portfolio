@@ -13,7 +13,7 @@ npm run dev
 ```
 
 ## Using
-- Vite (Build) 
+- Vite (Build) - https://vitejs.dev/
 - React Three Fiber (Three.js for React) - https://github.com/pmndrs/react-three-fiber
 - React Three Drei (Helpers for Fiber) - https://github.com/pmndrs/drei
 - Tailwindcss (Styles) - https://tailwindcss.com/
