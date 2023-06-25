@@ -3,6 +3,7 @@ import { useThree } from '@react-three/fiber'
 import Contact from "./Contact";
 import Moon from "./Moon";
 import Skills from "./Skills";
+import Experience1 from "./Experience1";
 
 export default function Models() {
 
@@ -18,13 +19,9 @@ export default function Models() {
     return (
         <group ref={group}>
             <Moon />
-            <Skills />
+            <Skills /> 
 
-            {/* https://codesandbox.io/s/mbfzf clouds */}
-            <mesh position={[0, -height * 2, 0]}>
-                <boxGeometry receiveShadow />
-                <meshStandardMaterial color="blue" />
-            </mesh>
+            <Experience1 />
             <mesh position={[0, -height * 3, 0]}>
                 <boxGeometry receiveShadow />
                 <meshStandardMaterial color="green" />

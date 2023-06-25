@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
-import { GradientTexture, useScroll } from "@react-three/drei";
+import { useScroll } from "@react-three/drei";
 import { folder, useControls } from "leva";
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { MathUtils } from 'three'
@@ -46,7 +46,7 @@ export default function Skills() {
         )
     })
 
-
+    const [active, setActive] = useState(true)
     const earth = useRef()
     const earthMesh = useRef()
     const satellite = useRef()
@@ -58,71 +58,86 @@ export default function Skills() {
 
     useFrame((state, delta) => {
         const r1 = scroll.range(0.25 / 6, 0.5 / 6)// 1 page / total page
+        const r2 = scroll.range(1.5 / 6, 0.7 / 6)
 
-        const r2 = scroll.range(1.5 / 6, 1 / 6)
+        if (active) {
+            //pop up earth up a bit
+            earth.current.position.y = MathUtils.damp(
+                earth.current.position.y,
+                (-height * 3) * (1 - r1) + ((-height * 2) * r1),
+                4,
+                delta
+            )
 
-        //pop up earth up a bit
-        earth.current.position.y = MathUtils.damp(
-            earth.current.position.y,
-            (-height * 3) * (1 - r1) + ((-height * 2) * r1),
-            4,
-            delta
-        )
+            //scale earth up
+            const scale = MathUtils.damp(
+                earth.current.scale.x,
+                1 + (2 * (r2)),
+                4,
+                delta
+            )
+            if (r2 == 1) {
+                console.log(false);
+                setActive(false)
+            }
+            //console.log(r2)
 
-        //scale earth up
-        const scale = MathUtils.damp(
-            earth.current.scale.x,
-            1 + (2 * (r2)),
-            4,
-            delta
-        )
-
-        earth.current.scale.x = earth.current.scale.y = earth.current.scale.z = scale
+            earth.current.scale.x = earth.current.scale.y = earth.current.scale.z = scale
 
 
-        //rotates the earth
-        earthMesh.current.rotation.y += (Skills.earthRotation / 100) * delta
-        //Orbit
-        satellite.current.rotation.z += (Skills.orbitSpeed / 50) * delta //Math.cos(delta / 4) / 100
+            //rotates the earth
+            earthMesh.current.rotation.y += (Skills.earthRotation / 100) * delta
+            //Orbit
+            satellite.current.rotation.z += (Skills.orbitSpeed / 50) * delta //Math.cos(delta / 4) / 100
+        }
+        else if (r2 < 1) {
+            console.log(true);
+            setActive(true)
+
+        }
     })
 
 
     return (
-        <group ref={earth} position={[0, -height * 3, 0]}>
-            <group ref={satellite} rotation={[0, Skills.orbitAngle, 0]}>
-                <mesh position={[0, 4, 0]}>
-                    <boxGeometry receiveShadow />
-                    <meshStandardMaterial color="white" />
-                </mesh>
-                <group rotation={[0, 0, -Math.PI * Skills.satelliteSpacing]}>
-                    <mesh position={[0, 4, 0]} >
-                        <boxGeometry receiveShadow />
-                        <meshStandardMaterial color="red" />
+        <>
+            {active &&
+                < group ref={earth} position={[0, -height * 3, 0]} >
+                    <group ref={satellite} rotation={[0, Skills.orbitAngle, 0]}>
+                        <mesh position={[0, 4, 0]}>
+                            <boxGeometry receiveShadow />
+                            <meshStandardMaterial color="white" />
+                        </mesh>
+                        <group rotation={[0, 0, -Math.PI * Skills.satelliteSpacing]}>
+                            <mesh position={[0, 4, 0]} >
+                                <boxGeometry receiveShadow />
+                                <meshStandardMaterial color="red" />
+                            </mesh>
+                        </group>
+                        <group rotation={[0, 0, -Math.PI * Skills.satelliteSpacing * 2]}>
+                            <mesh position={[0, 4, 0]} >
+                                <boxGeometry receiveShadow />
+                                <meshStandardMaterial color="green" />
+                            </mesh>
+                        </group>
+
+                        <group rotation={[0, 0, -Math.PI * Skills.satelliteSpacing * 3]}>
+                            <mesh position={[0, 4, 0]} >
+                                <boxGeometry receiveShadow />
+                                <meshStandardMaterial color="yellow" />
+                            </mesh>
+                        </group>
+                    </group>
+
+                    <mesh ref={earthMesh}>
+                        <sphereGeometry args={[3, 32, 32]} receiveShadow />
+                        <meshStandardMaterial map={earthColorMap} />
+                        {/* <meshStandardMaterial color="blue" wireframe /> */}
+                        {/* map={earthColorMap}  */}
+
+
                     </mesh>
-                </group>
-                <group rotation={[0, 0, -Math.PI * Skills.satelliteSpacing * 2]}>
-                    <mesh position={[0, 4, 0]} >
-                        <boxGeometry receiveShadow />
-                        <meshStandardMaterial color="green" />
-                    </mesh>
-                </group>
-
-                <group rotation={[0, 0, -Math.PI * Skills.satelliteSpacing * 3]}>
-                    <mesh position={[0, 4, 0]} >
-                        <boxGeometry receiveShadow />
-                        <meshStandardMaterial color="yellow" />
-                    </mesh>
-                </group>
-            </group>
-
-            <mesh ref={earthMesh}>
-                <sphereGeometry args={[3, 32, 32]} receiveShadow />
-                <meshStandardMaterial map={earthColorMap} />
-                {/* <meshStandardMaterial color="blue" wireframe /> */}
-                {/* map={earthColorMap}  */}
-
-
-            </mesh>
-        </group>
+                </group >
+            }
+        </>
     )
 }

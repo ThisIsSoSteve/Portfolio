@@ -1,7 +1,7 @@
-import { Stars } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { Sky, Stars, useScroll } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
 import { folder, useControls } from "leva";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Background() {
 
@@ -64,18 +64,47 @@ export default function Background() {
         )
     })
     const group = useRef()
+    const scroll = useScroll()
+    const { width, height } = useThree((state) => state.viewport)
+    const [active, setActive] = useState(true)
+
 
     useFrame((state, delta,) => {
-        group.current.rotation.x += background.rotationSpeed.y * delta
-        group.current.rotation.y += background.rotationSpeed.x * delta
+        if (active) {
+            group.current.rotation.x += background.rotationSpeed.y * delta
+            group.current.rotation.y += background.rotationSpeed.x * delta
+        }
 
+        const r2 = scroll.range(1.5 / 6, 0.5 / 6)
+        if (r2 == 1 && active) {
+            console.log(false);
+            setActive(false)
+        } else if (r2 < 1 && !active) {
+            console.log(true);
+            setActive(true)
+        }
     });
 
 
 
-    return (
-        <group ref={group}>
-            <Stars {...background} />
-        </group>
+    return (<>
+        {active &&
+            <group ref={group}>
+                <Stars {...background} />
+            </group>
+        }
+        {!active &&
+            <group ref={group} position={[0, -height * 4, 0]}>
+                <Sky
+
+                    azimuth={0.1}
+                    turbidity={10}
+                    rayleigh={0.5}
+                    inclination={0.51}
+                    distance={100} />
+            </group >
+        }
+
+    </>
     )
 }

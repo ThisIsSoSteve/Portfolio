@@ -25,10 +25,11 @@ function App() {
         <ambientLight intensity={0.5} />
         <pointLight position={[15, 10, 10]} />
 
-        <Background />
+
 
         <ScrollControls damping={0.5} pages={6} >
           <Scroll>
+            <Background />
             <Models />
           </Scroll>
           <Scroll html>
